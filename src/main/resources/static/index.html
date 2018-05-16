@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CORS Test</title>
+	<script type="text/javascript">
+		function ajax(){
+			var url = 'http://localhost:8088/test/image/launch-screen.png';
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+			    if (xhr.readyState == XMLHttpRequest.DONE) {
+			    	var image = document.getElementById("image");
+// 			        image.src = "data:"+xhr.getResponseHeader("Content-Type")+";base64," + btoa(String.fromCharCode.apply(null, new Uint8Array(xhr.response)));
+			    	var blob = new Blob([xhr.response], {
+			            type: xhr.getResponseHeader("Content-Type")
+			        });
+			        var imgUrl = window.URL.createObjectURL(blob);
+			        image.src = imgUrl;
+			    }
+			}
+			xhr.responseType = "arraybuffer";
+			xhr.open('GET', url, true);
+			xhr.setRequestHeader('Content-Type', 'image/png');
+			xhr.send();
+		}
+	</script>
+</head>
+<body>
+	<div id="test">
+		<a href="http://localhost:8088/test/image/launch-screen.png">general hyper link test</a>
+		<br/>
+		<button id="ajax" onclick="ajax()">ajax call</button>
+		<img id="image" src=""/>
+	</div>
+</body>
+</html>
